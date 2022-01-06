@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
-#include <iostream>
+#include <string>
+
+#include <fmt/ostream.h>
 
 int main(int argc, char** argv)
 {
-	std::cout << "hello world\n";
-	return 0;
+    fmt::print("hello world");
+    return 0;
 }

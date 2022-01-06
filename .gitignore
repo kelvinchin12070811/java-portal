@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Compiled files
 out/**/*
+
+# Dependencies configuration
+CMakeSettings.json
