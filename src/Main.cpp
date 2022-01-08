@@ -12,17 +12,25 @@
 
 int main(int argc, char** argv)
 {
-    const std::array<std::string, 4> loadingIconState = { "[█  ]", "[ █ ]", "[  █]", "[ █ ]" };
-    int loopState { 0 };
+    std::array<char, 8> loadingIcon { { '|', '/', '-', '\\', '|', '/', '-', '\\' } };
+    int index { 0 };
+    int percent{ 0 };
 
+    fmt::print("hello world\n\x1b[s");
     while (true)
     {
         using namespace std::chrono_literals;
-        fmt::print("{}\r", loadingIconState[loopState]);
+        fmt::print("\x1b[u\x1b[2K{} - loading: {}%", loadingIcon[index], percent++);
         std::this_thread::sleep_for(100ms);
-        loopState++;
-        if (loopState >= loadingIconState.size()) loopState = 0;
+        index++;
+        if (index >= loadingIcon.size()) index = 0;
+        if (percent > 100) percent = 0;
     }
 
+#ifdef DEBUG
+#ifdef WIN32
+    system("pause");
+#endif // WIN32
+#endif // DEBUG
     return 0;
 }
