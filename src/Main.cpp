@@ -10,22 +10,14 @@
 
 #include <fmt/ostream.h>
 
+#include "utils/WindowsConsoleInitialize.hpp"
+
 int main(int argc, char** argv)
 {
-    std::array<char, 8> loadingIcon { { '|', '/', '-', '\\', '|', '/', '-', '\\' } };
-    int index { 0 };
-    int percent{ 0 };
+#ifdef WIN_ADDITIONAL_STEPS
+    portal::utils::WindowsConsoleInitialize winConsoleInitialize;
+#endif // WIN_ADDITIONAL_STEPS
 
-    fmt::print("hello world\n\x1b[s");
-    while (true)
-    {
-        using namespace std::chrono_literals;
-        fmt::print("\x1b[u\x1b[2K{} - loading: {}%", loadingIcon[index], percent++);
-        std::this_thread::sleep_for(100ms);
-        index++;
-        if (index >= loadingIcon.size()) index = 0;
-        if (percent > 100) percent = 0;
-    }
 
 #ifdef DEBUG
 #ifdef WIN32

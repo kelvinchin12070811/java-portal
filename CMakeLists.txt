@@ -11,9 +11,11 @@ find_package(fmt CONFIG REQUIRED)
 
 set(SOURCE_FILES
 	src/Main.cpp
+	"src/utils/WindowsConsoleInitialize.cpp"
 )
 
 set(HEADER_FILES
+	"src/utils/WindowsConsoleInitialize.hpp"
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
