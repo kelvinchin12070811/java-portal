@@ -6,8 +6,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR on)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 
-find_package(Boost COMPONENTS REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(restclient-cpp CONFIG REQUIRED)
 
 set(SOURCE_FILES
 	src/Main.cpp
@@ -33,5 +35,8 @@ endif()
 target_link_libraries(
 	${PROJECT_NAME}
 	Boost::boost
+	Boost::program_options
 	fmt::fmt
+	nlohmann_json::nlohmann_json
+	restclient-cpp
 )

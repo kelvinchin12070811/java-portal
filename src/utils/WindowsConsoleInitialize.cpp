@@ -15,6 +15,10 @@ namespace portal::utils
 			fmt::print(std::cerr,
 				"Code page 65001 (UTF-8) not available, output formatting might not formated as expected");
 		}
+		else
+		{
+			SetConsoleCP(65001);
+		}
 		
 		auto stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 		auto stderrHandle = GetStdHandle(STD_ERROR_HANDLE);
