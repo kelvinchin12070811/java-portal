@@ -14,10 +14,12 @@ find_package(restclient-cpp CONFIG REQUIRED)
 set(SOURCE_FILES
 	src/Main.cpp
 	"src/utils/WindowsConsoleInitialize.cpp"
+	"src/services/ProgramOptionsService.cpp"
 )
 
 set(HEADER_FILES
 	"src/utils/WindowsConsoleInitialize.hpp"
+	"src/services/ProgramOptionsService.hpp"
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
