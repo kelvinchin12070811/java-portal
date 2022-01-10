@@ -16,28 +16,28 @@
  */
 namespace portal::utils
 {
-	class WindowsConsoleInitialize
-	{
-	public:
-		/**
-		 * @brief Construct initialize object to initialize required action on Windows.
-		 */
-		WindowsConsoleInitialize();
-		/**
-		 * @brief Clean up Windows console for initialized objects.
-		 */
-		~WindowsConsoleInitialize();
+    class WindowsConsoleInitialize
+    {
+    public:
+        /**
+         * @brief Construct initialize object to initialize required action on Windows.
+         */
+        WindowsConsoleInitialize();
+        /**
+         * @brief Clean up Windows console for initialized objects.
+         */
+        ~WindowsConsoleInitialize();
 
-		WindowsConsoleInitialize(const WindowsConsoleInitialize&) = delete;
-		WindowsConsoleInitialize(WindowsConsoleInitialize&&) = delete;
+        WindowsConsoleInitialize(const WindowsConsoleInitialize&) = delete;
+        WindowsConsoleInitialize(WindowsConsoleInitialize&&) = delete;
 
-		WindowsConsoleInitialize& operator=(const WindowsConsoleInitialize&) = delete;
-		WindowsConsoleInitialize& operator=(WindowsConsoleInitialize&&) = delete;
+        WindowsConsoleInitialize& operator=(const WindowsConsoleInitialize&) = delete;
+        WindowsConsoleInitialize& operator=(WindowsConsoleInitialize&&) = delete;
 
-	private:
-		DWORD stderrMode;
-		DWORD stdoutMode;
-	};
+    private:
+        DWORD stderrMode;
+        DWORD stdoutMode;
+    };
 }
 
 #endif // WIN32

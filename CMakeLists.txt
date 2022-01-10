@@ -12,19 +12,19 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(restclient-cpp CONFIG REQUIRED)
 
 set(SOURCE_FILES
-	src/Main.cpp
-	"src/utils/WindowsConsoleInitialize.cpp"
-	"src/services/ProgramOptionsService.cpp"
+    src/Main.cpp
+    "src/utils/WindowsConsoleInitialize.cpp"
+    "src/services/ProgramOptionsService.cpp"
 )
 
 set(HEADER_FILES
-	"src/utils/WindowsConsoleInitialize.hpp"
-	"src/services/ProgramOptionsService.hpp"
+    "src/utils/WindowsConsoleInitialize.hpp"
+    "src/services/ProgramOptionsService.hpp"
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-	add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-	add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 endif ()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
@@ -35,10 +35,10 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 endif()
 
 target_link_libraries(
-	${PROJECT_NAME}
-	Boost::boost
-	Boost::program_options
-	fmt::fmt
-	nlohmann_json::nlohmann_json
-	restclient-cpp
+    ${PROJECT_NAME}
+    Boost::boost
+    Boost::program_options
+    fmt::fmt
+    nlohmann_json::nlohmann_json
+    restclient-cpp
 )
