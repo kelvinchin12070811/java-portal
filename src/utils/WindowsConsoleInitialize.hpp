@@ -1,3 +1,8 @@
+/***********************************************************************************************************************
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ **********************************************************************************************************************/
 #pragma once
 #ifdef WIN32
 #define WIN_ADDITIONAL_STEPS
@@ -7,7 +12,7 @@
 #include <Windows.h>
 
 /**
- * @brief Additional steps to initialize console on Windows
+ * @brief Additional steps to initialize console on Windows, this object is unmoveable and uncopyable.
  */
 namespace portal::utils
 {
@@ -22,6 +27,12 @@ namespace portal::utils
 		 * @brief Clean up Windows console for initialized objects.
 		 */
 		~WindowsConsoleInitialize();
+
+		WindowsConsoleInitialize(const WindowsConsoleInitialize&) = delete;
+		WindowsConsoleInitialize(WindowsConsoleInitialize&&) = delete;
+
+		WindowsConsoleInitialize& operator=(const WindowsConsoleInitialize&) = delete;
+		WindowsConsoleInitialize& operator=(WindowsConsoleInitialize&&) = delete;
 
 	private:
 		DWORD stderrMode;
