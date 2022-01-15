@@ -3,9 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
+#include <iostream>
+
+#include <fmt/format.h>
 #include <fmt/ostream.h>
 
 #include "ProgramOptionsService.hpp"
+#include "src/Constants/Versions.hpp"
 
 namespace portal::services
 {
@@ -19,9 +23,19 @@ namespace portal::services
     {
         using namespace boost::program_options;
 
+        commands = decltype(commands){
+            {
+                "help", {
+                    "help",
+                    "Print help message",
+                    [this]() { this->printHelpMessage(); }
+                }
+            }
+        };
+
         optionsDescription.add_options()
             ("hello-world", "Print hello world message to the screen")
-            ("level", value<int>()->required(), "Level of an integer where use to testing only")
+            ("level", value<int>(), "Level of an integer where use to testing only")
             ("command", value<std::string>()->required(), "Commands");
 
         positionalOptionsDescription
@@ -49,12 +63,22 @@ namespace portal::services
         {
             const auto& command = variableMap["command"].as<std::string>();
 
-            if (command == "help") printHelpMessage();
+            try
+            {
+                commands.at(command).invoker();
+            }
+            catch (const std::exception&)
+            {
+                throw std::runtime_error{ fmt::format("Invalid command \"{}\"", command) };
+            }
         }
     }
     
     void ProgramOptionsService::printHelpMessage()
     {
-        fmt::print("{}\n", optionsDescription);
+        fmt::print("{}\n{}\n{}\n{}\n{} v{}\n\n", R"( ____            _        _)", R"(|  _ \ ___  _ __| |_ __ _| |)",
+            R"(| |_) / _ \| '__| __/ _` | |)", R"(|  __| (_) | |  | || (_| | |)", R"(|_|   \___/|_|   \__\__,_|_|)",
+            constants::VERSION);
+        fmt::print("Options:\n");
     }
 }

@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
 #pragma once
+#include <functional>
+#include <map>
 #include <tuple>
 #include <vector>
 
@@ -16,6 +18,14 @@ namespace portal::services
      */
     class ProgramOptionsService
     {
+    private:
+        struct CommandDescription
+        {
+            std::string commandName;
+            std::string description;
+            std::function<void()> invoker;
+        };
+
     public:
         /**
          * @brief Get the singleton instance of the ProgramOptionsServices.
@@ -51,6 +61,10 @@ namespace portal::services
          * @brief map of variable that parsed from supplied argument list.
          */
         boost::program_options::variables_map variableMap;
+        /**
+         * @brief list of options/commands that will be mapped to it's corresponded caller function.
+         */
+        std::map<std::string, CommandDescription> commands;
 
     private:
         /**

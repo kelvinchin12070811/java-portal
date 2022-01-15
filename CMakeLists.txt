@@ -20,6 +20,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
     "src/utils/WindowsConsoleInitialize.hpp"
     "src/services/ProgramOptionsService.hpp"
+    "src/Constants/Versions.hpp"
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
