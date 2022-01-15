@@ -19,10 +19,18 @@ namespace portal::services
     class ProgramOptionsService
     {
     private:
+        /**
+         * @brief Determine the descriptions of the command for help message or documentations.
+         */
         struct CommandDescription
         {
-            std::string commandName;
+            /**
+             * @brief Description of the command.
+             */
             std::string description;
+            /**
+             * @brief Invoker function that invoke the corresponded worker function.
+             */
             std::function<void()> invoker;
         };
 
