@@ -10,19 +10,15 @@
 #include "utils/WindowsConsoleInitialize.hpp"
 #include "services/ProgramOptionsService.hpp"
 
-
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 #ifdef WIN_ADDITIONAL_STEPS
     portal::utils::WindowsConsoleInitialize winConsoleInitialize;
 #endif // WIN_ADDITIONAL_STEPS
 
-    try
-    {
+    try {
         portal::services::ProgramOptionsService::instance().init(argc, argv);
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception &e) {
         fmt::print(std::cerr, "{}\n", e.what());
         return 1;
     }

@@ -5,39 +5,39 @@
  **********************************************************************************************************************/
 #pragma once
 #ifdef WIN32
-#define WIN_ADDITIONAL_STEPS
+#    define WIN_ADDITIONAL_STEPS
 
-#include <bitset>
+#    include <bitset>
 
-#include <Windows.h>
+#    include <Windows.h>
 
 /**
- * @brief Additional steps to initialize console on Windows, this object is unmoveable and uncopyable.
+ * @brief Additional steps to initialize console on Windows, this object is unmoveable and
+ * uncopyable.
  */
-namespace portal::utils
+namespace portal::utils {
+class WindowsConsoleInitialize
 {
-    class WindowsConsoleInitialize
-    {
-    public:
-        /**
-         * @brief Construct initialize object to initialize required action on Windows.
-         */
-        WindowsConsoleInitialize();
-        /**
-         * @brief Clean up Windows console for initialized objects.
-         */
-        ~WindowsConsoleInitialize();
+public:
+    /**
+     * @brief Construct initialize object to initialize required action on Windows.
+     */
+    WindowsConsoleInitialize();
+    /**
+     * @brief Clean up Windows console for initialized objects.
+     */
+    ~WindowsConsoleInitialize();
 
-        WindowsConsoleInitialize(const WindowsConsoleInitialize&) = delete;
-        WindowsConsoleInitialize(WindowsConsoleInitialize&&) = delete;
+    WindowsConsoleInitialize(const WindowsConsoleInitialize &) = delete;
+    WindowsConsoleInitialize(WindowsConsoleInitialize &&) = delete;
 
-        WindowsConsoleInitialize& operator=(const WindowsConsoleInitialize&) = delete;
-        WindowsConsoleInitialize& operator=(WindowsConsoleInitialize&&) = delete;
+    WindowsConsoleInitialize &operator=(const WindowsConsoleInitialize &) = delete;
+    WindowsConsoleInitialize &operator=(WindowsConsoleInitialize &&) = delete;
 
-    private:
-        DWORD stderrMode;
-        DWORD stdoutMode;
-    };
+private:
+    DWORD stderrMode;
+    DWORD stdoutMode;
+};
 }
 
 #endif // WIN32

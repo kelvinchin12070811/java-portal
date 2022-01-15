@@ -5,7 +5,6 @@
  **********************************************************************************************************************/
 #include <string_view>
 
-namespace portal::constants
-{
-    constexpr std::string_view VERSION = { "1.0.0 alpha" };
+namespace portal::constants {
+constexpr std::string_view VERSION = { "1.0.0 alpha" };
 }
