@@ -81,6 +81,10 @@ private:
      * @brief Print help message to the screen.
      */
     void printHelpMessage();
+    /**
+     * @brief Fetch version of JVMs available online.
+     */
+    void fetchRemoteJVMVersion();
 
     ProgramOptionsService() = default;
     ~ProgramOptionsService() = default;

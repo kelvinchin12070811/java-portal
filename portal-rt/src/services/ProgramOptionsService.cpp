@@ -5,13 +5,17 @@
  **********************************************************************************************************************/
 #include <algorithm>
 #include <array>
-#include <iostream>
+#include <atomic>
+#include <future>
+#include <memory>
 
+#include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 
-#include "ProgramOptionsService.hpp"
 #include "Constants/Versions.hpp"
+#include "ProgramOptionsService.hpp"
+#include "Repos/AdoptiumJVMRepo.hpp"
 
 namespace portal::services {
 ProgramOptionsService &ProgramOptionsService::instance()
@@ -26,7 +30,9 @@ void ProgramOptionsService::init(int argc, char **argv)
 
     commands = decltype(commands) {
         { "help", { "Print help message", [this]() { this->printHelpMessage(); } } },
-        { "list", { "List all installed JVMs", []() {} } }
+        { "list", { "List all installed JVMs", []() {} } },
+        { "jvm-list",
+          { "List available version of JVM online", [this]() { this->fetchRemoteJVMVersion(); } } }
     };
 
     // clang-format off
@@ -82,10 +88,11 @@ void ProgramOptionsService::printHelpMessage()
     constexpr int columnWidth { 20 };
     constexpr std::array<std::string_view, 1> ignoredOptions { { "--command" } };
 
-    fmt::print("{}\n{}\n{}\n{}\n{}\n{:>35}\n{:>35}\n\n", R"( ____            _        _)",
-               R"(|  _ \ ___  _ __| |_ __ _| |)", R"(| |_) / _ \| '__| __/ _` | |)",
-               R"(|  __| (_) | |  | || (_| | |)", R"(|_|   \___/|_|   \__\__,_|_|)",
-               "A version manager for Java", fmt::format("v{}", constants::VERSION));
+    fmt::print(fmt::fg(fmt::color::blue_violet), "{}\n{}\n{}\n{}\n{}\n{:>35}\n{:>35}\n\n",
+               R"( ____            _        _)", R"(|  _ \ ___  _ __| |_ __ _| |)",
+               R"(| |_) / _ \| '__| __/ _` | |)", R"(|  __| (_) | |  | || (_| | |)",
+               R"(|_|   \___/|_|   \__\__,_|_|)", "A version manager for Java",
+               fmt::format("v{}", constants::VERSION));
 
     fmt::print("Usage: portal [command] <option>...\n\n");
     fmt::print("Commands:\n");
@@ -113,5 +120,39 @@ void ProgramOptionsService::printHelpMessage()
     }
 
     fmt::print("\n");
+}
+
+void ProgramOptionsService::fetchRemoteJVMVersion()
+{
+    constexpr std::array<std::string_view, 8> loadingAnimation { { "|", "/", "-", "\\", "|", "/",
+                                                                   "-", "\\" } };
+    std::unique_ptr<repos::IJVMRepo> jvmRepo = std::make_unique<repos::AdoptiumJVMRepo>();
+    std::atomic_bool dataFetched { false };
+
+    fmt::print("\x1b[s");
+    
+    std::thread { [&]() {
+        int state { 0 };
+        while (!dataFetched) {
+            using namespace std::chrono_literals;
+
+            fmt::print("\x1b[u\x1b[0J");
+            fmt::print(fmt::fg(fmt::color::gold), "{} Fetching", loadingAnimation[state++]);
+            std::this_thread::sleep_for(100ms);
+            if (state >= loadingAnimation.size())
+                state = 0;
+        }
+    } }.detach();
+
+    try {
+        auto result = jvmRepo->getAvailableJVMs();
+        dataFetched = true;
+        fmt::print("\x1b[u\x1b[0J");
+        fmt::print("data fetched!\n");
+    } catch (const std::exception &e) {
+        dataFetched = true;
+        fmt::print("\x1b[u\x1b[0J");
+        fmt::print(fmt::fg(fmt::color::red), "{}\n", e.what());
+    }
 }
 }

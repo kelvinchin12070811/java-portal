@@ -12,15 +12,18 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(restclient-cpp CONFIG REQUIRED)
 
 set(SOURCE_FILES
-    "Main.cpp"
     "utils/WindowsConsoleInitialize.cpp"
     "services/ProgramOptionsService.cpp"
+    "Main.cpp"
+    "Repos/AdoptiumJVMRepo.cpp"
 )
 
 set(HEADER_FILES
-    "utils/WindowsConsoleInitialize.hpp"
-    "services/ProgramOptionsService.hpp"
     "Constants/Versions.hpp"
+    "Repos/AdoptiumJVMRepo.hpp"
+    "Repos/IJVMRepo.hpp"
+    "services/ProgramOptionsService.hpp"
+    "utils/WindowsConsoleInitialize.hpp"
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")

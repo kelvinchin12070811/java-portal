@@ -1,5 +1,6 @@
 $dependencies = @(
     'boost-program-options',
+    'boost-scope-exit',
     'fmt',
     'nlohmann-json',
     'restclient-cpp'
