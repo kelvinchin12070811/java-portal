@@ -12,6 +12,7 @@
 #include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/ostream.h>
+#include <fmt/ranges.h>
 
 #include "Constants/Versions.hpp"
 #include "ProgramOptionsService.hpp"
@@ -31,7 +32,7 @@ void ProgramOptionsService::init(int argc, char **argv)
     commands = decltype(commands) {
         { "help", { "Print help message", [this]() { this->printHelpMessage(); } } },
         { "list", { "List all installed JVMs", []() {} } },
-        { "jvm-list",
+        { "installable",
           { "List available version of JVM online", [this]() { this->fetchRemoteJVMVersion(); } } }
     };
 
@@ -148,7 +149,11 @@ void ProgramOptionsService::fetchRemoteJVMVersion()
         auto result = jvmRepo->getAvailableJVMs();
         dataFetched = true;
         fmt::print("\x1b[u\x1b[0J");
-        fmt::print("data fetched!\n");
+        fmt::print(fmt::emphasis::bold, "Available versions:\n\n");
+        fmt::print(" * {}\n", fmt::join(result, "\n * "));
+        fmt::print("\nUse ");
+        fmt::print(fmt::emphasis::bold | fmt::emphasis::bold, "portal add <version>");
+        fmt::print(" to install a JVM");
     } catch (const std::exception &e) {
         dataFetched = true;
         fmt::print("\x1b[u\x1b[0J");
