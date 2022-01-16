@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
 #pragma once
+#include <atomic>
 #include <functional>
 #include <map>
 #include <tuple>
@@ -71,6 +72,10 @@ private:
      * @brief list of options/commands that will be mapped to it's corresponded caller function.
      */
     std::map<std::string, CommandDescription> commands;
+    /**
+     * @brief Determine if the application is in loading state and hence render loading animation.
+     */
+    std::atomic_bool isLoading { false };
 
 private:
     /**
@@ -85,6 +90,17 @@ private:
      * @brief Fetch version of JVMs available online.
      */
     void fetchRemoteJVMVersion();
+    /**
+     * @brief Render the loading indication when a task is working in background.
+     * @param status Status message that describe the current working task.
+     *
+     * @info This function should run asynchronously as a detached thread.
+     */
+    void renderLoadingIndicator(std::string_view status);
+    /**
+     * @brief Stop rendering the loading indicator as a task has done.
+     */
+    void stopRenderLoadingIndicator();
 
     ProgramOptionsService() = default;
     ~ProgramOptionsService() = default;

@@ -29,11 +29,17 @@ void ProgramOptionsService::init(int argc, char **argv)
 {
     using namespace boost::program_options;
 
+    auto animationDebuger = [this]() {
+        std::thread { [this]() { renderLoadingIndicator("Debuging animation..."); } }.join();
+    };
+
     commands = decltype(commands) {
         { "help", { "Print help message", [this]() { this->printHelpMessage(); } } },
         { "list", { "List all installed JVMs", []() {} } },
         { "installable",
-          { "List available version of JVM online", [this]() { this->fetchRemoteJVMVersion(); } } }
+          { "List available versions of JVM online",
+            [this]() { this->fetchRemoteJVMVersion(); } } },
+        { "ani-debug", { "use to debug animation", [&]() { animationDebuger(); } } }
     };
 
     // clang-format off
@@ -125,39 +131,48 @@ void ProgramOptionsService::printHelpMessage()
 
 void ProgramOptionsService::fetchRemoteJVMVersion()
 {
-    constexpr std::array<std::string_view, 8> loadingAnimation { { "|", "/", "-", "\\", "|", "/",
-                                                                   "-", "\\" } };
     std::unique_ptr<repos::IJVMRepo> jvmRepo = std::make_unique<repos::AdoptiumJVMRepo>();
-    std::atomic_bool dataFetched { false };
 
-    fmt::print("\x1b[s");
-    
-    std::thread { [&]() {
-        int state { 0 };
-        while (!dataFetched) {
-            using namespace std::chrono_literals;
-
-            fmt::print("\x1b[u\x1b[0J");
-            fmt::print(fmt::fg(fmt::color::gold), "{} Fetching", loadingAnimation[state++]);
-            std::this_thread::sleep_for(100ms);
-            if (state >= loadingAnimation.size())
-                state = 0;
-        }
-    } }.detach();
+    std::thread { [this]() { renderLoadingIndicator("fetching..."); } }.detach();
 
     try {
         auto result = jvmRepo->getAvailableJVMs();
-        dataFetched = true;
-        fmt::print("\x1b[u\x1b[0J");
+        stopRenderLoadingIndicator();
+        
         fmt::print(fmt::emphasis::bold, "Available versions:\n\n");
         fmt::print(" * {}\n", fmt::join(result, "\n * "));
         fmt::print("\nUse ");
         fmt::print(fmt::emphasis::bold | fmt::emphasis::bold, "portal add <version>");
         fmt::print(" to install a JVM");
     } catch (const std::exception &e) {
-        dataFetched = true;
-        fmt::print("\x1b[u\x1b[0J");
+        stopRenderLoadingIndicator();
         fmt::print(fmt::fg(fmt::color::red), "{}\n", e.what());
     }
+}
+
+void ProgramOptionsService::renderLoadingIndicator(std::string_view status)
+{
+    using namespace std::chrono_literals;
+    constexpr std::array<std::string_view, 7> loadingAnimation { { "▖", "▞", "▟", "█", "▙", "▚",
+                                                                   "▗" } };
+    int frame { 0 };
+    constexpr auto sleepDuration = 500ms;
+
+    if (!isLoading) isLoading = true;
+
+    fmt::print("\x1b[s");
+
+    while (isLoading) {
+        fmt::print("\x1b[u");
+        fmt::print(fmt::fg(fmt::color::gold), "{} {}", loadingAnimation[frame++], status);
+        if (frame >= loadingAnimation.size()) frame = 0;
+        std::this_thread::sleep_for(sleepDuration);
+    }
+}
+
+void ProgramOptionsService::stopRenderLoadingIndicator()
+{
+    if (isLoading) isLoading = false;
+    fmt::print("\x1b[u\x1b[s\x1b[J");
 }
 }
