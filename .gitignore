@@ -402,3 +402,6 @@ out/**/*
 
 # Dependencies configuration
 CMakeSettings.json
+
+#Mac OS Stuffs
+.DS_Store
