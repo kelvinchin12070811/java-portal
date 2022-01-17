@@ -27,6 +27,7 @@ set(HEADER_FILES
     "Repos/AdoptiumJVMRepo.hpp"
     "Repos/IJVMRepo.hpp"
     "services/ProgramOptionsService.hpp"
+    "utils/StdRangesPatch.hpp"
     "utils/WindowsConsoleInitialize.hpp"
 )
 

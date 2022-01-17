@@ -7,6 +7,7 @@
 #include <array>
 #include <atomic>
 #include <future>
+#include <iostream>
 #include <memory>
 
 #include <fmt/color.h>
@@ -17,6 +18,7 @@
 #include "Constants/Versions.hpp"
 #include "ProgramOptionsService.hpp"
 #include "Repos/AdoptiumJVMRepo.hpp"
+#include "utils/StdRangesPatch.hpp"
 
 namespace portal::services {
 ProgramOptionsService &ProgramOptionsService::instance()
@@ -113,7 +115,7 @@ void ProgramOptionsService::printHelpMessage()
 
     for (const auto &option : optionsDescription.options()) {
         std::string optionName { option->format_name() };
-
+        
         if (std::ranges::any_of(ignoredOptions,
                                 [&](const auto &command) { return command == optionName; }))
             continue;
@@ -163,8 +165,10 @@ void ProgramOptionsService::renderLoadingIndicator(std::string_view status)
     fmt::print("\x1b[s");
 
     while (isLoading) {
-        fmt::print("\x1b[u");
+        fmt::print("\x1b[u\x1b[0J");
         fmt::print(fmt::fg(fmt::color::gold), "{} {}", loadingAnimation[frame++], status);
+        std::cout << std::flush;
+        
         if (frame >= loadingAnimation.size()) frame = 0;
         std::this_thread::sleep_for(sleepDuration);
     }
