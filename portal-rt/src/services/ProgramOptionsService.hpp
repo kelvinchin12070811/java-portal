@@ -90,17 +90,6 @@ private:
      * @brief Fetch version of JVMs available online.
      */
     void fetchRemoteJVMVersion();
-    /**
-     * @brief Render the loading indication when a task is working in background.
-     * @param status Status message that describe the current working task.
-     *
-     * @info This function should run asynchronously as a detached thread.
-     */
-    void renderLoadingIndicator(std::string_view status);
-    /**
-     * @brief Stop rendering the loading indicator as a task has done.
-     */
-    void stopRenderLoadingIndicator();
 
     ProgramOptionsService() = default;
     ~ProgramOptionsService() = default;
