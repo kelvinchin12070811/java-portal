@@ -19,13 +19,13 @@ set(SOURCE_FILES
     "utils/WindowsConsoleInitialize.cpp"
     "services/ProgramOptionsService.cpp"
     "Main.cpp"
-    "Repos/AdoptiumJVMRepo.cpp"
+    "repos/AdoptiumJVMRepo.cpp"
 )
 
 set(HEADER_FILES
-    "Constants/Versions.hpp"
-    "Repos/AdoptiumJVMRepo.hpp"
-    "Repos/IJVMRepo.hpp"
+    "constants/Versions.hpp"
+    "repos/AdoptiumJVMRepo.hpp"
+    "repos/IJVMRepo.hpp"
     "services/ProgramOptionsService.hpp"
     "utils/StdRangesPatch.hpp"
     "utils/WindowsConsoleInitialize.hpp"

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
-#include <algorithm>
 #include <array>
 #include <atomic>
 #include <future>
@@ -15,9 +14,9 @@
 #include <fmt/ostream.h>
 #include <fmt/ranges.h>
 
-#include "Constants/Versions.hpp"
-#include "ProgramOptionsService.hpp"
-#include "Repos/AdoptiumJVMRepo.hpp"
+#include "constants/Versions.hpp"
+#include "programOptionsService.hpp"
+#include "repos/AdoptiumJVMRepo.hpp"
 #include "utils/StdRangesPatch.hpp"
 
 namespace portal::services {
@@ -67,7 +66,7 @@ void ProgramOptionsService::init(int argc, char **argv)
 void ProgramOptionsService::distributeCommandWorkers()
 {
     if (variableMap.count("version")) {
-        fmt::print("{}", constants::VERSION);
+        fmt::print("{}\n", constants::VERSION);
         return;
     }
 
@@ -155,19 +154,19 @@ void ProgramOptionsService::fetchRemoteJVMVersion()
 void ProgramOptionsService::renderLoadingIndicator(std::string_view status)
 {
     using namespace std::chrono_literals;
-    constexpr std::array<std::string_view, 7> loadingAnimation { { "▖", "▞", "▟", "█", "▙", "▚",
+    constexpr std::array<std::string_view, 7> loadingAnimation { { "▖", "▌", "▛", "█", "▜", "▐",
                                                                    "▗" } };
     int frame { 0 };
-    constexpr auto sleepDuration = 500ms;
+    constexpr auto sleepDuration = 150ms;
 
     if (!isLoading) isLoading = true;
 
     fmt::print("\x1b[s");
 
     while (isLoading) {
-        fmt::print("\x1b[u\x1b[0J");
+        fmt::print("\x1b[u");
         fmt::print(fmt::fg(fmt::color::gold), "{} {}", loadingAnimation[frame++], status);
-        std::cout << std::flush;
+        std::cout.flush();
         
         if (frame >= loadingAnimation.size()) frame = 0;
         std::this_thread::sleep_for(sleepDuration);

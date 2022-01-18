@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
-
-#if defined(__APPLE__) && defined(__MACH__)
+/**
+ * This file is
+ */
 #include <algorithm>
 
+#if defined(__APPLE__) && defined(__MACH__)
 namespace std::ranges {
 auto any_of(const auto& range, const auto& predicate)
 {
