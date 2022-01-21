@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
-#include <algorithm>
 #include <array>
 #include <atomic>
 #include <future>
@@ -15,10 +14,11 @@
 #include <fmt/ostream.h>
 #include <fmt/ranges.h>
 
-#include "Constants/Versions.hpp"
-#include "ProgramOptionsService.hpp"
-#include "Repos/AdoptiumJVMRepo.hpp"
+#include "constants/Versions.hpp"
+#include "programOptionsService.hpp"
+#include "repos/AdoptiumJVMRepo.hpp"
 #include "utils/StdRangesPatch.hpp"
+#include "components/animations/SimpleSpinningAnimationComponent.hpp"
 
 namespace portal::services {
 ProgramOptionsService &ProgramOptionsService::instance()
@@ -30,9 +30,15 @@ ProgramOptionsService &ProgramOptionsService::instance()
 void ProgramOptionsService::init(int argc, char **argv)
 {
     using namespace boost::program_options;
+    using namespace portal::components::animations;
 
     auto animationDebuger = [this]() {
-        std::thread { [this]() { renderLoadingIndicator("Debuging animation..."); } }.join();
+        using namespace std::chrono_literals;
+
+        std::unique_ptr<IAnimationComponent> animation =
+                std::make_unique<SimpleSpinningAnimationComponent>("Debugging animation...");
+        animation->start();
+        std::this_thread::sleep_for(24h);
     };
 
     commands = decltype(commands) {
@@ -67,7 +73,7 @@ void ProgramOptionsService::init(int argc, char **argv)
 void ProgramOptionsService::distributeCommandWorkers()
 {
     if (variableMap.count("version")) {
-        fmt::print("{}", constants::VERSION);
+        fmt::print("{}\n", constants::VERSION);
         return;
     }
 
@@ -82,7 +88,7 @@ void ProgramOptionsService::distributeCommandWorkers()
 
         try {
             commands.at(command).invoker();
-        } catch (const std::exception &) {
+        } catch (const std::out_of_range&) {
             throw std::runtime_error { fmt::format(
                     "Unknown command \"{}\", use \"portal help\" to get usage info", command) };
         }
@@ -133,50 +139,25 @@ void ProgramOptionsService::printHelpMessage()
 
 void ProgramOptionsService::fetchRemoteJVMVersion()
 {
-    std::unique_ptr<repos::IJVMRepo> jvmRepo = std::make_unique<repos::AdoptiumJVMRepo>();
+    using namespace portal::components::animations;
 
-    std::thread { [this]() { renderLoadingIndicator("fetching..."); } }.detach();
+    std::unique_ptr<repos::IJVMRepo> jvmRepo = std::make_unique<repos::AdoptiumJVMRepo>();
+    std::unique_ptr<IAnimationComponent> animator =
+            std::make_unique<SimpleSpinningAnimationComponent>("Fetching...");
+
+    animator->start();
 
     try {
         auto result = jvmRepo->getAvailableJVMs();
-        stopRenderLoadingIndicator();
+        animator->stop();
         
         fmt::print(fmt::emphasis::bold, "Available versions:\n\n");
         fmt::print(" * {}\n", fmt::join(result, "\n * "));
         fmt::print("\nUse ");
         fmt::print(fmt::emphasis::bold | fmt::emphasis::bold, "portal add <version>");
-        fmt::print(" to install a JVM");
+        fmt::print(" to install a JVM\n");
     } catch (const std::exception &e) {
-        stopRenderLoadingIndicator();
-        fmt::print(fmt::fg(fmt::color::red), "{}\n", e.what());
+        throw std::runtime_error { e.what() };
     }
-}
-
-void ProgramOptionsService::renderLoadingIndicator(std::string_view status)
-{
-    using namespace std::chrono_literals;
-    constexpr std::array<std::string_view, 7> loadingAnimation { { "▖", "▞", "▟", "█", "▙", "▚",
-                                                                   "▗" } };
-    int frame { 0 };
-    constexpr auto sleepDuration = 500ms;
-
-    if (!isLoading) isLoading = true;
-
-    fmt::print("\x1b[s");
-
-    while (isLoading) {
-        fmt::print("\x1b[u\x1b[0J");
-        fmt::print(fmt::fg(fmt::color::gold), "{} {}", loadingAnimation[frame++], status);
-        std::cout << std::flush;
-        
-        if (frame >= loadingAnimation.size()) frame = 0;
-        std::this_thread::sleep_for(sleepDuration);
-    }
-}
-
-void ProgramOptionsService::stopRenderLoadingIndicator()
-{
-    if (isLoading) isLoading = false;
-    fmt::print("\x1b[u\x1b[s\x1b[J");
 }
 }

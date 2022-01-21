@@ -3,16 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
-/**
- * This file is
- */
-#include <algorithm>
 
-#if defined(__APPLE__) && defined(__MACH__)
-namespace std::ranges {
-auto any_of(const auto& range, const auto& predicate)
+namespace portal::components::animations {
+/**
+ * @brief Animation Component interface that handle the abstraction of animation components.
+ */
+struct IAnimationComponent
 {
-    return std::any_of(range.begin(), range.end(), predicate);
+    /**
+     * @brief Start the render of animation.
+     */
+    virtual void start() = 0;
+    /**
+     * @brief Stop the render of animation.
+     */
+    virtual void stop() = 0;
+    virtual ~IAnimationComponent() = default;
+};
 }
-}
-#endif

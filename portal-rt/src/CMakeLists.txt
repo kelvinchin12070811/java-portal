@@ -17,16 +17,19 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(restclient-cpp CONFIG REQUIRED)
 
 set(SOURCE_FILES
-    "utils/WindowsConsoleInitialize.cpp"
-    "services/ProgramOptionsService.cpp"
+    "components/animations/SimpleSpinningAnimationComponent.cpp"
     "Main.cpp"
-    "Repos/AdoptiumJVMRepo.cpp"
+    "repos/AdoptiumJVMRepo.cpp"
+    "services/ProgramOptionsService.cpp"
+    "utils/WindowsConsoleInitialize.cpp"
 )
 
 set(HEADER_FILES
-    "Constants/Versions.hpp"
-    "Repos/AdoptiumJVMRepo.hpp"
-    "Repos/IJVMRepo.hpp"
+    "components/animations/IAnimationComponent.hpp"
+    "components/animations/SimpleSpinningAnimationComponent.hpp"
+    "constants/Versions.hpp"
+    "repos/AdoptiumJVMRepo.hpp"
+    "repos/IJVMRepo.hpp"
     "services/ProgramOptionsService.hpp"
     "utils/StdRangesPatch.hpp"
     "utils/WindowsConsoleInitialize.hpp"
