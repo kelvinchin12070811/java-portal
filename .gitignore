@@ -399,9 +399,13 @@ FodyWeavers.xsd
 
 # Compiled files
 out/**/*
+build/**/*
 
 # Dependencies configuration
 CMakeSettings.json
 
-#Mac OS Stuffs
+# Mac OS Stuffs
 .DS_Store
+
+# VS Code's settings
+.vscode/**/*
