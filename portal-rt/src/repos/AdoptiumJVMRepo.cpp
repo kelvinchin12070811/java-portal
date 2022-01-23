@@ -9,7 +9,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "Repos/AdoptiumJVMRepo.hpp"
+#include "repos/AdoptiumJVMRepo.hpp"
 
 namespace portal::repos {
 std::vector<std::string> AdoptiumJVMRepo::getAvailableJVMs()
@@ -29,9 +29,8 @@ std::vector<std::string> AdoptiumJVMRepo::getAvailableJVMs()
     std::vector<std::string> versions;
     versions.reserve(document["versions"].size());
 
-    for (const auto &version : document["versions"])
-        versions.push_back(version["openjdk_version"]);
-    
+    for (const auto &version : document["versions"]) versions.push_back(version["openjdk_version"]);
+
     return versions;
 }
 }

@@ -18,6 +18,8 @@ find_package(restclient-cpp CONFIG REQUIRED)
 
 set(SOURCE_FILES
     "components/animations/SimpleSpinningAnimationComponent.cpp"
+    "components/tasks/ApplicationTaskfactory.cpp"
+    "components/tasks/JVMVersionListApplicationTask.cpp"
     "Main.cpp"
     "repos/AdoptiumJVMRepo.cpp"
     "services/ProgramOptionsService.cpp"
@@ -27,6 +29,9 @@ set(SOURCE_FILES
 set(HEADER_FILES
     "components/animations/IAnimationComponent.hpp"
     "components/animations/SimpleSpinningAnimationComponent.hpp"
+    "components/tasks/ApplicationTaskFactory.cpp"
+    "components/tasks/IApplicationTask.hpp"
+    "components/tasks/JVMVersionListApplicationTask.hpp"
     "constants/Versions.hpp"
     "repos/AdoptiumJVMRepo.hpp"
     "repos/IJVMRepo.hpp"

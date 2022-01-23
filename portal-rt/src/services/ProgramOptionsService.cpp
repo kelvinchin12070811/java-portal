@@ -20,6 +20,7 @@
 #include "repos/AdoptiumJVMRepo.hpp"
 #include "utils/StdRangesPatch.hpp"
 #include "components/animations/SimpleSpinningAnimationComponent.hpp"
+#include "components/tasks/ApplicationTaskFactory.hpp"
 
 namespace portal::services {
 ProgramOptionsService &ProgramOptionsService::instance()
@@ -32,24 +33,6 @@ void ProgramOptionsService::init(int argc, char **argv)
 {
     using namespace boost::program_options;
     using namespace portal::components::animations;
-
-    auto animationDebuger = [this]() {
-        using namespace std::chrono_literals;
-
-        std::unique_ptr<IAnimationComponent> animation =
-                std::make_unique<SimpleSpinningAnimationComponent>("Debugging animation...");
-        animation->start();
-        std::this_thread::sleep_for(24h);
-    };
-
-    commands = decltype(commands) {
-        { "help", { "Print help message", [this]() { this->printHelpMessage(); } } },
-        { "list", { "List all installed JVMs", []() {} } },
-        { "installable",
-          { "List available versions of JVM online",
-            [this]() { this->fetchRemoteJVMVersion(); } } },
-        { "ani-debug", { "use to debug animation", [&]() { animationDebuger(); } } }
-    };
 
     // clang-format off
     optionsDescription.add_options()
@@ -87,7 +70,9 @@ void ProgramOptionsService::distributeCommandWorkers()
         const auto &command = variableMap["command"].as<std::string>();
 
         try {
-            commands.at(command).invoker();
+            auto task =
+                    tasks::ApplicationTaskFactory::instance().getApplicationTaskFromName(command);
+            task->run();
         } catch (const std::out_of_range &) {
             throw std::runtime_error { fmt::format(
                     "Unknown command \"{}\", use \"portal help\" to get usage info", command) };
