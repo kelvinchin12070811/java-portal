@@ -1,4 +1,5 @@
 dependencies=(
+    "boost-assert"
     "boost-program-options"
     "boost-scope-exit"
     "fmt"
