@@ -4,8 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
 #pragma once
-#include <string_view>
 
-namespace portal::constants {
-constexpr std::string_view VERSION = { "1.0.0 alpha" };
-}
+// clang-format off
+#if defined(__APPLE__)
+#define ANSI_ESCAPE_CODE_NOT_FULLY_SUPPORTED
+#endif
+// clang-format on

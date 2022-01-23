@@ -4,13 +4,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
 /**
- * This file is
+ * This file is a patch file for unsupported compiler to support certain C++ 20 features.
  */
+#pragma once
 #include <algorithm>
 
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __clang__
 namespace std::ranges {
-auto any_of(const auto& range, const auto& predicate)
+auto any_of(const auto &range, const auto &predicate)
 {
     return std::any_of(range.begin(), range.end(), predicate);
 }

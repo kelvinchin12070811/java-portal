@@ -77,8 +77,7 @@ void ProgramOptionsService::distributeCommandWorkers()
         return;
     }
 
-    if (variableMap.count("hello-world"))
-        fmt::print("Hello World!\n");
+    if (variableMap.count("hello-world")) fmt::print("Hello World!\n");
 
     if (variableMap.count("level"))
         fmt::print("Level is set to {}\n", variableMap["level"].as<int>());
@@ -88,7 +87,7 @@ void ProgramOptionsService::distributeCommandWorkers()
 
         try {
             commands.at(command).invoker();
-        } catch (const std::out_of_range&) {
+        } catch (const std::out_of_range &) {
             throw std::runtime_error { fmt::format(
                     "Unknown command \"{}\", use \"portal help\" to get usage info", command) };
         }
@@ -103,7 +102,7 @@ void ProgramOptionsService::printHelpMessage()
     constexpr int columnWidth { 20 };
     constexpr std::array<std::string_view, 1> ignoredOptions { { "--command" } };
 
-    fmt::print(fmt::fg(fmt::color::blue_violet), "{}\n{}\n{}\n{}\n{}\n{:>35}\n{:>35}\n\n",
+    fmt::print(fmt::fg(fmt::color::gold), "{}\n{}\n{}\n{}\n{}\n{:>35}\n{:>35}\n\n",
                R"( ____            _        _)", R"(|  _ \ ___  _ __| |_ __ _| |)",
                R"(| |_) / _ \| '__| __/ _` | |)", R"(|  __| (_) | |  | || (_| | |)",
                R"(|_|   \___/|_|   \__\__,_|_|)", "A version manager for Java",
@@ -121,15 +120,14 @@ void ProgramOptionsService::printHelpMessage()
 
     for (const auto &option : optionsDescription.options()) {
         std::string optionName { option->format_name() };
-        
+
         if (std::ranges::any_of(ignoredOptions,
                                 [&](const auto &command) { return command == optionName; }))
             continue;
 
         std::string optionParams { option->format_parameter() };
 
-        if (!optionParams.empty())
-            optionName = fmt::format("{} [{}]", optionName, optionParams);
+        if (!optionParams.empty()) optionName = fmt::format("{} [{}]", optionName, optionParams);
 
         fmt::print("    {1:<{0}} := {2}\n", columnWidth, optionName, option->description());
     }
@@ -150,7 +148,7 @@ void ProgramOptionsService::fetchRemoteJVMVersion()
     try {
         auto result = jvmRepo->getAvailableJVMs();
         animator->stop();
-        
+
         fmt::print(fmt::emphasis::bold, "Available versions:\n\n");
         fmt::print(" * {}\n", fmt::join(result, "\n * "));
         fmt::print("\nUse ");

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
+#pragma once
 #include <array>
 #include <atomic>
 #include <string>
@@ -27,7 +28,7 @@ public:
     void stop() override;
 
     SimpleSpinningAnimationComponent(const SimpleSpinningAnimationComponent &) = default;
-    SimpleSpinningAnimationComponent(SimpleSpinningAnimationComponent&&) = default;
+    SimpleSpinningAnimationComponent(SimpleSpinningAnimationComponent &&) = default;
     SimpleSpinningAnimationComponent &operator=(const SimpleSpinningAnimationComponent &) = default;
     SimpleSpinningAnimationComponent &operator=(SimpleSpinningAnimationComponent &&) = default;
     ~SimpleSpinningAnimationComponent();

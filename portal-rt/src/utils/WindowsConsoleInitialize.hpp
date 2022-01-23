@@ -5,11 +5,13 @@
  **********************************************************************************************************************/
 #pragma once
 #ifdef WIN32
-#    define WIN_ADDITIONAL_STEPS
+// clang-format off
+#define WIN_ADDITIONAL_STEPS
 
-#    include <bitset>
+#include <bitset>
 
-#    include <Windows.h>
+#include <Windows.h>
+// clang-format on
 
 /**
  * @brief Additional steps to initialize console on Windows, this object is unmoveable and
