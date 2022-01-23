@@ -11,8 +11,6 @@
 #include <fmt/color.h>
 #include <fmt/ostream.h>
 
-#include "constants/Configs.hpp"
-
 namespace portal::components::animations {
 SimpleSpinningAnimationComponent::SimpleSpinningAnimationComponent(std::string message)
     : message { std::move(message) }
@@ -44,7 +42,7 @@ void SimpleSpinningAnimationComponent::render()
 
     while (rendering) {
         using namespace std::chrono;
-
+        fmt::print("\x1b[u");
         fmt::print(fmt::fg(fmt::color::gold), "{} {}", animationFrames[frameIndex++], message);
         std::cout.flush();
         if (frameIndex >= animationFrames.size()) frameIndex = 0;

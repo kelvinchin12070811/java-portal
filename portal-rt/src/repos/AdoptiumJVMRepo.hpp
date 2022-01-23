@@ -6,7 +6,7 @@
 #pragma once
 #include <string_view>
 
-#include "Repos/IJVMRepo.hpp"
+#include "repos/IJVMRepo.hpp"
 
 namespace portal::repos {
 class AdoptiumJVMRepo : public IJVMRepo

@@ -27,10 +27,10 @@ public:
     void start() override;
     void stop() override;
 
-    SimpleSpinningAnimationComponent(const SimpleSpinningAnimationComponent &) = default;
-    SimpleSpinningAnimationComponent(SimpleSpinningAnimationComponent &&) = default;
-    SimpleSpinningAnimationComponent &operator=(const SimpleSpinningAnimationComponent &) = default;
-    SimpleSpinningAnimationComponent &operator=(SimpleSpinningAnimationComponent &&) = default;
+    SimpleSpinningAnimationComponent(const SimpleSpinningAnimationComponent &) = delete;
+    SimpleSpinningAnimationComponent(SimpleSpinningAnimationComponent &&) = delete;
+    SimpleSpinningAnimationComponent &operator=(const SimpleSpinningAnimationComponent &) = delete;
+    SimpleSpinningAnimationComponent &operator=(SimpleSpinningAnimationComponent &&) = delete;
     ~SimpleSpinningAnimationComponent();
 
 private:

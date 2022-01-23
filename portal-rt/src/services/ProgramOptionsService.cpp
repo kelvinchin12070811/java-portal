@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  **********************************************************************************************************************/
+#include "programOptionsService.hpp"
+
 #include <array>
 #include <atomic>
 #include <future>
@@ -15,7 +17,6 @@
 #include <fmt/ranges.h>
 
 #include "constants/Versions.hpp"
-#include "programOptionsService.hpp"
 #include "repos/AdoptiumJVMRepo.hpp"
 #include "utils/StdRangesPatch.hpp"
 #include "components/animations/SimpleSpinningAnimationComponent.hpp"
