@@ -45,15 +45,7 @@ void SimpleSpinningAnimationComponent::render()
     while (rendering) {
         using namespace std::chrono;
 
-#ifdef ANSI_
-        fmt::print("\x1b[u");
-#endif
         fmt::print(fmt::fg(fmt::color::gold), "{} {}", animationFrames[frameIndex++], message);
-
-#ifdef __clang__
-        fmt::print("\r");
-#endif
-
         std::cout.flush();
         if (frameIndex >= animationFrames.size()) frameIndex = 0;
         std::this_thread::sleep_for(duration_cast<nanoseconds>(1s) / 10);
