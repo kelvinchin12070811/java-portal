@@ -11,5 +11,6 @@ namespace portal::repos {
 struct IJVMRepo
 {
     virtual std::vector<std::string> getAvailableJVMs() = 0;
+    virtual ~IJVMRepo() = default;
 };
 }
