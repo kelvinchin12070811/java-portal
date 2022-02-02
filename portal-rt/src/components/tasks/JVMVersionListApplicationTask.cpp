@@ -13,7 +13,7 @@
 #include "components/animations/SimpleSpinningAnimationComponent.hpp"
 #include "repos/AdoptiumJVMRepo.hpp"
 
-namespace portal::tasks {
+namespace portal::components::tasks {
 void JVMVersionListApplicationTask::run()
 {
     using namespace portal::components::animations;

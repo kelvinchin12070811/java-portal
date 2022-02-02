@@ -70,8 +70,8 @@ void ProgramOptionsService::distributeCommandWorkers()
         const auto &command = variableMap["command"].as<std::string>();
 
         try {
-            auto task =
-                    tasks::ApplicationTaskFactory::instance().getApplicationTaskFromName(command);
+            using portal::components::tasks::ApplicationTaskFactory;
+            auto task = ApplicationTaskFactory::instance().getApplicationTaskFromName(command);
             task->run();
         } catch (const std::out_of_range &) {
             throw std::runtime_error { fmt::format(

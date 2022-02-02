@@ -8,9 +8,10 @@
 #include <boost/assert.hpp>
 #include <fmt/format.h>
 
+#include "components/tasks/AniDebugApplicationTask.hpp"
 #include "components/tasks/JVMVersionListApplicationTask.hpp"
 
-namespace portal::tasks {
+namespace portal::components::tasks {
 ApplicationTaskFactory &ApplicationTaskFactory::instance()
 {
     static ApplicationTaskFactory instance_;
@@ -58,7 +59,7 @@ ApplicationTaskFactory::ApplicationTaskFactory()
             "ani-debug",
             {
                 "use to debug animation",
-                []() { return nullptr; }
+                []() { return std::make_unique<AniDebugApplicationTask>(); }
             }
         }
         // clang-format on

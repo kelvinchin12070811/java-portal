@@ -7,9 +7,11 @@
 #include "components/tasks/IApplicationTask.hpp"
 
 namespace portal::components::tasks {
-class JVMVersionListApplicationTask : public IApplicationTask
+class AniDebugApplicationTask : public IApplicationTask
 {
 public:
     void run() override;
+
+    ~AniDebugApplicationTask() override = default;
 };
 }

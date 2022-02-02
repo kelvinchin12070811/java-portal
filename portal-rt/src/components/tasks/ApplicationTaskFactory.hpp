@@ -12,7 +12,7 @@
 
 #include "components/tasks/IApplicationTask.hpp"
 
-namespace portal::tasks {
+namespace portal::components::tasks {
 class ApplicationTaskFactory
 {
 public:

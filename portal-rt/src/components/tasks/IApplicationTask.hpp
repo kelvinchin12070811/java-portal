@@ -5,7 +5,7 @@
  **********************************************************************************************************************/
 #pragma once
 
-namespace portal::tasks {
+namespace portal::components::tasks {
 class IApplicationTask
 {
 public:
