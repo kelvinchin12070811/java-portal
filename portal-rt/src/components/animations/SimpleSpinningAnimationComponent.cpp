@@ -38,17 +38,14 @@ SimpleSpinningAnimationComponent::~SimpleSpinningAnimationComponent()
 
 void SimpleSpinningAnimationComponent::render()
 {
-    fmt::print("\x1b[s");
-
     while (rendering) {
         using namespace std::chrono;
-        fmt::print("\x1b[u");
-        fmt::print(fmt::fg(fmt::color::gold), "{} {}", animationFrames[frameIndex++], message);
+        fmt::print(fmt::fg(fmt::terminal_color::bright_yellow), "\r{} {}", animationFrames[frameIndex++], message);
         std::cout.flush();
         if (frameIndex >= animationFrames.size()) frameIndex = 0;
         std::this_thread::sleep_for(duration_cast<nanoseconds>(1s) / 10);
     }
 
-    fmt::print("\x1b[u\x1b[J");
+    fmt::print("\r\x1b[0J");
 }
 }
